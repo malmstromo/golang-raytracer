@@ -29,14 +29,11 @@ func main() {
 	for j := 0; j < image_height; j++ {
 		fmt.Printf("\rScanlines remaining: %d ", image_height-j)
 		for i := 0; i < image_width; i++ {
+			v := Vector{X: float64(i) / float64(image_width), Y: float64(j) / float64(image_height), Z: 0.2}
 
-			r := float64(i) / float64(image_width-1)
-			g := float64(j) / float64(image_height-1)
-			b := float64(0)
-
-			ir := int(color * r)
-			ig := int(color * g)
-			ib := int(color * b)
+			ir := int(color * v.X)
+			ig := int(color * v.Y)
+			ib := int(color * v.Z)
 
 			_, err = fmt.Fprintf(f, "%d %d %d\n", ir, ig, ib)
 
