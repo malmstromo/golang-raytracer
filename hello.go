@@ -27,6 +27,7 @@ func main() {
 	defer f.Close()
 
 	for j := 0; j < image_height; j++ {
+		fmt.Printf("\rScanlines remaining: %d ", image_height-j)
 		for i := 0; i < image_width; i++ {
 
 			r := float64(i) / float64(image_width-1)
