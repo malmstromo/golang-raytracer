@@ -24,8 +24,17 @@ func main() {
 	}
 
 	// Image dimensions
-	imageWidth := 256
-	imageHeight := 256
+	imageWidth := 400
+	imageHeight := 200
+
+	// Define a sphere
+	sphere := Sphere{Center: Vec3{X: 0, Y: 0, Z: -1}, Radius: 0.5}
+
+	// Define the camera
+	origin := Vec3{X: 0, Y: 0, Z: 0}
+	lowerLeftCorner := Vec3{X: -2.0, Y: -1.0, Z: -1.0}
+	horizontal := Vec3{X: 4.0, Y: 0.0, Z: 0.0}
+	vertical := Vec3{X: 0.0, Y: 2.0, Z: 0.0}
 
 	// Open a file to save the image
 	file, err := os.Create("image.ppm")
@@ -40,15 +49,25 @@ func main() {
 	// Generate the image
 	for j := imageHeight - 1; j >= 0; j-- {
 		for i := 0; i < imageWidth; i++ {
-			r := float64(i) / float64(imageWidth-1)
-			g := float64(j) / float64(imageHeight-1)
-			b := blue
+			u := float64(i) / float64(imageWidth-1)
+			v := float64(j) / float64(imageHeight-1)
+			direction := lowerLeftCorner.Add(horizontal.Scale(u)).Add(vertical.Scale(v)).Sub(origin)
+			ray := Ray{Origin: origin, Direction: direction}
 
-			ir := int(255.999 * r)
-			ig := int(255.999 * g)
-			ib := int(255.999 * b)
-
-			fmt.Fprintf(file, "%d %d %d\n", ir, ig, ib)
+			// Check if the ray hits the sphere
+			if hit, _ := sphere.Hit(ray); hit {
+				// Red color for sphere
+				fmt.Fprintf(file, "255 0 0\n")
+			} else {
+				// Gradient background
+				r := float64(i) / float64(imageWidth-1)
+				g := float64(j) / float64(imageHeight-1)
+				b := blue
+				ir := int(255.999 * r)
+				ig := int(255.999 * g)
+				ib := int(255.999 * b)
+				fmt.Fprintf(file, "%d %d %d\n", ir, ig, ib)
+			}
 		}
 	}
 
