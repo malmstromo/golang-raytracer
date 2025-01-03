@@ -52,11 +52,11 @@ If the Ray hits the Sphere, calculate its color from the surface normal.
 If no hit, create a blue-white gradient.
 */
 func rayColor(r Ray, sphere Sphere) Vec3 {
-	if hit, _, normal := sphere.Hit(r); hit {
+	if hit, rec := sphere.Hit(r, 0, 1); hit {
 		return Vec3{
-			0.5 * (normal.X + 1.0),
-			0.5 * (normal.Y + 1.0),
-			0.5 * (normal.Z + 1.0),
+			0.5 * (rec.Normal.X + 1.0),
+			0.5 * (rec.Normal.Y + 1.0),
+			0.5 * (rec.Normal.Z + 1.0),
 		}
 	}
 	return lerp(r)
