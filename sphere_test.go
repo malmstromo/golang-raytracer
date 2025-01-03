@@ -10,7 +10,7 @@ func TestSphere_Hit(t *testing.T) {
 	ray := Ray{Origin: Vec3{X: 0, Y: 0, Z: 0}, Direction: Vec3{X: 0, Y: 0, Z: -1}}
 
 	// Check for intersection
-	hit, tValue := sphere.Hit(ray)
+	hit, tValue, _ := sphere.Hit(ray)
 	if !hit {
 		t.Errorf("Expected ray to hit the sphere")
 	}

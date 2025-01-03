@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestVec3_Add(t *testing.T) {
 	v1 := Vec3{X: 1, Y: 2, Z: 3}
@@ -31,5 +34,23 @@ func TestVec3_Length(t *testing.T) {
 	result := v.Length()
 	if result != expected {
 		t.Errorf("Length: expected %v, got %v", expected, result)
+	}
+}
+
+func TestVec3_Normalize(t *testing.T) {
+	v := Vec3{3, 4, 0}
+	normalized := v.Normalize()
+
+	// Check that the magnitude is 1
+	if mag := normalized.Length(); math.Abs(mag-1) != 0 {
+		t.Errorf("Expected magnitude of 1, got %v", mag)
+	}
+
+	// Check that the direction is correct
+	expected := Vec3{0.6, 0.8, 0}
+	if math.Abs(normalized.X-expected.X) > 0 ||
+		math.Abs(normalized.Y-expected.Y) > 0 ||
+		math.Abs(normalized.Z-expected.Z) > 0 {
+		t.Errorf("Expected %v, got %v", expected, normalized)
 	}
 }

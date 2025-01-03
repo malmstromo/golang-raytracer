@@ -26,3 +26,11 @@ func (v Vec3) Dot(u Vec3) float64 {
 func (v Vec3) Length() float64 {
 	return math.Sqrt(v.Dot(v))
 }
+
+func (v Vec3) Normalize() Vec3 {
+	mag := v.Length()
+	if mag == 0 {
+		return Vec3{0, 0, 0} // Avoid division by zero
+	}
+	return Vec3{v.X / mag, v.Y / mag, v.Z / mag}
+}
