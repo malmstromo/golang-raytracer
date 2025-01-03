@@ -37,7 +37,7 @@ func (s Sphere) Hit(ray Ray, tMin float64, tMax float64) (bool, HitRecord) {
 	}
 
 	hitPoint := ray.At(t)
-	normal := hitPoint.Sub(s.Center).Normalize()
+	normal := hitPoint.Sub(s.Center).Scale(1.0 / s.Radius)
 
 	return true, HitRecord{
 		T:      t,
