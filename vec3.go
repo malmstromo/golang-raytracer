@@ -30,6 +30,10 @@ func (v Vec3) Length() float64 {
 	return math.Sqrt(v.Dot(v))
 }
 
+func (v Vec3) LengthSquared() float64 {
+	return v.Dot(v)
+}
+
 func (v Vec3) Normalize() Vec3 {
 	mag := v.Length()
 	if mag == 0 {

@@ -9,18 +9,18 @@ type Sphere struct {
 
 func (s Sphere) Hit(ray Ray) (bool, float64, Vec3) {
 	oc := s.Center.Sub(ray.Origin)
-	a := ray.Direction.Dot(ray.Direction)
-	b := -2.0 * oc.Dot(ray.Direction)
+	a := ray.Direction.LengthSquared()
+	h := ray.Direction.Dot(oc)
 	c := oc.Dot(oc) - s.Radius*s.Radius
 
-	discriminant := b*b - 4*a*c
+	discriminant := h*h - a*c
 
 	if discriminant < 0 {
 		// No intersection
 		return false, 0, Vec3{}
 	} else {
 		// Closest intersection point
-		t := (-b - math.Sqrt(discriminant)) / (2.0 * a)
+		t := (h - math.Sqrt(discriminant)) / a
 
 		hitPoint := ray.At(t)
 		// Compute the normal vector
