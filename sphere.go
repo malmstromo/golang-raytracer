@@ -8,9 +8,9 @@ type Sphere struct {
 }
 
 func (s Sphere) Hit(ray Ray) (bool, float64, Vec3) {
-	oc := ray.Origin.Sub(s.Center)
+	oc := s.Center.Sub(ray.Origin)
 	a := ray.Direction.Dot(ray.Direction)
-	b := 2.0 * oc.Dot(ray.Direction)
+	b := -2.0 * oc.Dot(ray.Direction)
 	c := oc.Dot(oc) - s.Radius*s.Radius
 
 	discriminant := b*b - 4*a*c
