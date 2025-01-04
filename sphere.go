@@ -27,10 +27,11 @@ func (s Sphere) Hit(ray Ray, tMin float64, tMax float64) (bool, HitRecord) {
 	}
 
 	// Find the nearest root that lies in the acceptable range.
-	t := (h - math.Sqrt(discriminant)) / a
+	sqrt := math.Sqrt(h*h - a*c)
+	t := (h - sqrt) / a
 
 	if t <= tMin || tMax <= t {
-		t = (h + math.Sqrt(discriminant)) / a
+		t = (h + sqrt) / a
 		if t <= tMin || tMax <= t {
 			return false, rec
 		}
@@ -39,9 +40,16 @@ func (s Sphere) Hit(ray Ray, tMin float64, tMax float64) (bool, HitRecord) {
 	hitPoint := ray.At(t)
 	normal := hitPoint.Sub(s.Center).Scale(1.0 / s.Radius)
 
+	frontFace := ray.Direction.Dot(normal) < 0
+
+	if !frontFace {
+		normal = normal.Scale(-1)
+	}
+
 	return true, HitRecord{
-		T:      t,
-		P:      hitPoint,
-		Normal: normal,
+		T:         t,
+		P:         hitPoint,
+		Normal:    normal,
+		FrontFace: frontFace,
 	}
 }
